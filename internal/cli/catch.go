@@ -30,6 +30,7 @@ func CommandCatch(client *pokemon.Client, input string) error {
 	}
 
 	println("Caught " + pkm.Name + "!")
+	println("You can now inspect it with the 'inspect' command")
 
 	client.Pokedex.Add(pkm)
 	return nil
