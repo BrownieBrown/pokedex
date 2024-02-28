@@ -1,7 +1,9 @@
 package models
 
+import "time"
+
 type Config struct {
-	Next     *string `json:"next"`
-	Previous *string `json:"previous"`
-	BaseURL  string  `json:"base_url"`
+	BaseURL       string `json:"base_url"`
+	CacheInterval time.Duration
+	ClientTimeout time.Duration
 }

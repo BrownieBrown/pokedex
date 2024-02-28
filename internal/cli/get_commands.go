@@ -1,9 +1,17 @@
 package cli
 
-import "github.com/BrownieBrown/pokedex/internal/models"
+import (
+	"github.com/BrownieBrown/pokedex/internal/api/pokemon"
+)
 
-func GetCommands() map[string]models.CliCommand {
-	return map[string]models.CliCommand{
+type Command struct {
+	Name        string
+	Description string
+	Callback    func(client *pokemon.Client) error
+}
+
+func GetCommands() map[string]Command {
+	return map[string]Command{
 		"help": {
 			Name:        "help",
 			Description: "Displays the help message",
