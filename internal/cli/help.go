@@ -1,8 +1,10 @@
 package cli
 
-import "github.com/BrownieBrown/pokedex/internal/models"
+import (
+	"github.com/BrownieBrown/pokedex/internal/api/pokemon"
+)
 
-func CommandHelp(cfg *models.Config) error {
+func CommandHelp(client *pokemon.Client) error {
 	println("Welcome to Pokedex!")
 	println("Usage:")
 	println()

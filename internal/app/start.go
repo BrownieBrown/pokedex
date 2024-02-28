@@ -4,25 +4,11 @@ import (
 	"bufio"
 	"github.com/BrownieBrown/pokedex/internal/api/pokemon"
 	"github.com/BrownieBrown/pokedex/internal/cli"
-	"github.com/BrownieBrown/pokedex/internal/models"
 	"github.com/BrownieBrown/pokedex/internal/utils"
 	"os"
 )
 
-func Start() {
-	var cfg models.Config
-	cfg.BaseURL = "https://pokeapi.co/api/v2/location/"
-	var page models.LocationPage
-	var err error
-
-	page, err = pokemon.GetLocations(&cfg.BaseURL)
-	if err != nil {
-		println(err.Error())
-		return
-	}
-	cfg.Next = page.Next
-	cfg.Previous = page.Previous
-
+func Start(client *pokemon.Client) {
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for {
@@ -34,7 +20,7 @@ func Start() {
 		command, exists := cli.GetCommands()[commandName]
 
 		if exists {
-			err := command.Callback(&cfg)
+			err := command.Callback(client)
 			if err != nil {
 				println(err.Error())
 			}

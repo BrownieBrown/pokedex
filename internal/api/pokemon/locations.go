@@ -8,13 +8,22 @@ import (
 	"net/http"
 )
 
-func GetLocations(url *string) (models.LocationPage, error) {
-	if url == nil {
-		log.Printf("No URL provided")
-		return models.LocationPage{}, nil
+func (c *Client) GetLocations(pageURL *string) (models.LocationPage, error) {
+	url := c.baseURL + "/location-area"
+	if pageURL != nil {
+		url = *pageURL
 	}
 
-	res, err := http.Get(*url)
+	if value, ok := c.cache.Get(url); ok {
+		var page models.LocationPage
+		err := json.Unmarshal(value, &page)
+		if err != nil {
+			return models.LocationPage{}, err
+		}
+		return page, err
+	}
+
+	res, err := http.Get(url)
 	if err != nil {
 		log.Fatal(err)
 		return models.LocationPage{}, err
@@ -39,6 +48,8 @@ func GetLocations(url *string) (models.LocationPage, error) {
 		log.Printf("Failed to unmarshal JSON: %v", err)
 		return models.LocationPage{}, err
 	}
+
+	c.cache.Add(url, body)
 
 	return page, err
 }

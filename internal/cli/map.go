@@ -5,48 +5,23 @@ import (
 	"github.com/BrownieBrown/pokedex/internal/models"
 )
 
-func CommandMap(cfg *models.Config) error {
-	if cfg.Previous == nil {
-		page, err := pokemon.GetLocations(&cfg.BaseURL)
-		if err != nil {
-			return err
-		}
-		printLocations(page)
-	}
-
-	if cfg.Next == nil {
-		println("No next page")
-		return nil
-	}
-
-	nextPage, err := pokemon.GetLocations(cfg.Next)
+func CommandMap(client *pokemon.Client) error {
+	locations, err := getNextLocations(client)
 	if err != nil {
 		return err
 	}
 
-	printLocations(nextPage)
-
-	cfg.Next = nextPage.Next
-	cfg.Previous = nextPage.Previous
-
+	printLocations(locations)
 	return nil
 }
 
-func CommandMapb(cfg *models.Config) error {
-	if cfg.Previous == nil {
-		println("No previous page")
-		return nil
-	}
-
-	previousPage, err := pokemon.GetLocations(cfg.Previous)
+func CommandMapb(client *pokemon.Client) error {
+	locations, err := getPreviousLocations(client)
 	if err != nil {
 		return err
 	}
 
-	printLocations(previousPage)
-
-	cfg.Previous = previousPage.Previous
-	cfg.Next = previousPage.Next
+	printLocations(locations)
 
 	return nil
 }
@@ -55,4 +30,28 @@ func printLocations(page models.LocationPage) {
 	for _, location := range page.Results {
 		println(location.Name)
 	}
+}
+
+func getNextLocations(client *pokemon.Client) (models.LocationPage, error) {
+	url := client.Pagination.GetNext()
+	locations, err := client.GetLocations(url)
+	if err != nil {
+		return models.LocationPage{}, err
+	}
+
+	client.Pagination.Update(locations.Next, locations.Previous)
+
+	return locations, nil
+}
+
+func getPreviousLocations(client *pokemon.Client) (models.LocationPage, error) {
+	url := client.Pagination.GetPrevious()
+	locations, err := client.GetLocations(url)
+	if err != nil {
+		return models.LocationPage{}, err
+	}
+
+	client.Pagination.Update(locations.Next, locations.Previous)
+
+	return locations, nil
 }

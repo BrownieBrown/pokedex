@@ -1,11 +1,11 @@
 package cli
 
 import (
-	"github.com/BrownieBrown/pokedex/internal/models"
+	"github.com/BrownieBrown/pokedex/internal/api/pokemon"
 	"os"
 )
 
-func CommandExit(cfg *models.Config) error {
+func CommandExit(client *pokemon.Client) error {
 	os.Exit(0)
 	return nil
 }
