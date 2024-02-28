@@ -5,8 +5,8 @@ import (
 	"github.com/BrownieBrown/pokedex/internal/models"
 )
 
-func CommandExplore(client *pokemon.Client, location string) error {
-	area, err := client.GetArea(location)
+func CommandExplore(client *pokemon.Client, input string) error {
+	area, err := client.GetArea(input)
 	if err != nil {
 		return err
 	}

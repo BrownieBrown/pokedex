@@ -5,7 +5,7 @@ import (
 	"github.com/BrownieBrown/pokedex/internal/models"
 )
 
-func CommandMap(client *pokemon.Client, location string) error {
+func CommandMap(client *pokemon.Client, input string) error {
 	locations, err := getNextLocations(client)
 	if err != nil {
 		return err
@@ -15,7 +15,7 @@ func CommandMap(client *pokemon.Client, location string) error {
 	return nil
 }
 
-func CommandMapb(client *pokemon.Client, location string) error {
+func CommandMapb(client *pokemon.Client, input string) error {
 	locations, err := getPreviousLocations(client)
 	if err != nil {
 		return err

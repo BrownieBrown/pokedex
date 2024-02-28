@@ -7,7 +7,7 @@ import (
 type Command struct {
 	Name        string
 	Description string
-	Callback    func(client *pokemon.Client, location string) error
+	Callback    func(client *pokemon.Client, input string) error
 }
 
 func GetCommands() map[string]Command {
@@ -36,6 +36,11 @@ func GetCommands() map[string]Command {
 			Name:        "explore",
 			Description: "Display the next given location",
 			Callback:    CommandExplore,
+		},
+		"catch": {
+			Name:        "catch",
+			Description: "Catch a Pokémon",
+			Callback:    CommandCatch,
 		},
 	}
 }
