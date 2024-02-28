@@ -11,6 +11,7 @@ type Client struct {
 	httpClient http.Client
 	baseURL    string
 	Pagination *PaginationManager
+	Pokedex    *Pokedex
 }
 
 func NewClient(cfg models.Config) *Client {
@@ -21,6 +22,7 @@ func NewClient(cfg models.Config) *Client {
 		},
 		cfg.BaseURL,
 		NewPaginationManager(),
+		NewPokedex(),
 	}
 	return &c
 }

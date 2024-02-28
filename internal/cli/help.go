@@ -4,7 +4,7 @@ import (
 	"github.com/BrownieBrown/pokedex/internal/api/pokemon"
 )
 
-func CommandHelp(client *pokemon.Client, location string) error {
+func CommandHelp(client *pokemon.Client, input string) error {
 	println("Welcome to Pokedex!")
 	println("Usage:")
 	println()
