@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-func CommandExit(client *pokemon.Client) error {
+func CommandExit(client *pokemon.Client, location string) error {
 	os.Exit(0)
 	return nil
 }

@@ -16,11 +16,20 @@ func Start(client *pokemon.Client) {
 
 		scanner.Scan()
 		line := utils.CleanInput(scanner.Text())
+		if len(line) < 1 {
+			println("Please enter a command")
+			continue
+		}
 		commandName := line[0]
 		command, exists := cli.GetCommands()[commandName]
 
+		var location string
+		if len(line) > 1 {
+			location = line[1]
+		}
+
 		if exists {
-			err := command.Callback(client)
+			err := command.Callback(client, location)
 			if err != nil {
 				println(err.Error())
 			}
