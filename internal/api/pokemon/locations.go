@@ -53,3 +53,45 @@ func (c *Client) GetLocations(pageURL *string) (models.LocationPage, error) {
 
 	return page, err
 }
+
+func (c *Client) GetArea(location string) (models.LocationArea, error) {
+	url := c.baseURL + "/location-area/" + location
+	if value, ok := c.cache.Get(url); ok {
+		var area models.LocationArea
+		err := json.Unmarshal(value, &area)
+		if err != nil {
+			return models.LocationArea{}, err
+		}
+		return area, err
+	}
+
+	res, err := http.Get(url)
+	if err != nil {
+		log.Fatal(err)
+		return models.LocationArea{}, err
+	}
+
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+
+		}
+	}(res.Body)
+
+	body, err := io.ReadAll(res.Body)
+	if err != nil {
+		log.Printf("Failed to read response body: %v", err)
+		return models.LocationArea{}, err
+	}
+
+	var area models.LocationArea
+	err = json.Unmarshal(body, &area)
+	if err != nil {
+		log.Printf("Failed to unmarshal JSON: %v", err)
+		return models.LocationArea{}, err
+	}
+
+	c.cache.Add(url, body)
+
+	return area, err
+}

@@ -7,7 +7,7 @@ import (
 type Command struct {
 	Name        string
 	Description string
-	Callback    func(client *pokemon.Client) error
+	Callback    func(client *pokemon.Client, location string) error
 }
 
 func GetCommands() map[string]Command {
@@ -31,6 +31,11 @@ func GetCommands() map[string]Command {
 			Name:        "mapb",
 			Description: "Displays the previous 20 locations",
 			Callback:    CommandMapb,
+		},
+		"explore": {
+			Name:        "explore",
+			Description: "Display the next given location",
+			Callback:    CommandExplore,
 		},
 	}
 }
