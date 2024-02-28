@@ -23,7 +23,6 @@ func CommandCatch(client *pokemon.Client, input string) error {
 	}
 
 	println("Attempting to catch " + pkm.Name + "...")
-	println()
 
 	if !catch(pkm) {
 		println("Failed to catch " + pkm.Name + "...")
@@ -44,33 +43,28 @@ func catch(pkm models.Pokemon) bool {
 }
 
 func calculateLevel(experience int) int {
-	// Normalize the experience to a 1-100 scale.
 	level := int(math.Log(float64(experience+1)) * 10)
-	// Ensure level falls within the 1 to 100 range.
 	if level < 1 {
 		level = 1
 	} else if level > 100 {
 		level = 100
 	}
+
 	return level
 }
 
 func attemptCatch(level int) bool {
-	// Define the maximum catch chance for the lowest level Pokémon.
-	maxCatchChance := 90.0 // This means a level 1 Pokémon has a 90% catch chance.
-	// Calculate the decrease in catch chance per level.
-	catchChanceDecreasePerLevel := 0.9
+	maxCatchChance := 95.0
+	catchChanceDecreasePerLevel := 0.5
+	minCatchChance := 10.0
 
-	// Calculate the threshold that needs to be met or exceeded to catch the Pokémon.
-	// The higher the level, the lower the threshold, making it harder to catch.
 	catchThreshold := maxCatchChance - (catchChanceDecreasePerLevel * float64(level-1))
+	if catchThreshold < minCatchChance {
+		catchThreshold = minCatchChance
+	}
 
-	// Generate a random roll to compare with the threshold.
-	roll := rand.Float64() * 100 // Generates a number between 0.0 and 100.0
-
+	roll := rand.Float64() * 100
 	fmt.Printf("Roll: %.2f, Needed: %.2f or higher\n", roll, catchThreshold)
 
-	// Determine if the catch attempt is successful.
-	// A successful catch now requires the roll to be higher than the catchThreshold.
 	return roll >= catchThreshold
 }
