@@ -26,6 +26,10 @@ func (p *Pokedex) Remove(name string) {
 	delete(p.Index, name)
 }
 
-func (p *Pokedex) GetAll() map[string]models.Pokemon {
-	return p.Index
+func (p *Pokedex) GetAll() []string {
+	var names []string
+	for name := range p.Index {
+		names = append(names, name)
+	}
+	return names
 }
